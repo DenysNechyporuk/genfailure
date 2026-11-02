@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is Gen A Failure Yet?</title>
+<style>
+  :root {
+    --bg: #2a2a33;
+    --bar: #121214;
+    --card: #141416;
+    --text: #f2f2f2;
+    --accent: #e0245e;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  nav {
+    background: var(--bar);
+    border-bottom: 1px solid #333;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 12px 16px;
+  }
+  nav a {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 800;
+    letter-spacing: 1px;
+    font-size: 17px;
+  }
+  nav a:hover { color: var(--accent); }
+  main {
+    flex: 1;
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 40px 16px 60px;
+    text-align: center;
+  }
+  h1 {
+    font-size: clamp(32px, 6vw, 60px);
+    margin: 0 0 56px;
+  }
+  .timer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 64px;
+  }
+  .unit {
+    background: var(--card);
+    border-radius: 6px;
+    width: 144px;
+    padding: 14px 0 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  }
+  .unit span {
+    display: block;
+    color: var(--accent);
+    font-size: 50px;
+    font-weight: 700;
+  }
+  .unit small {
+    display: block;
+    margin-top: 10px;
+    font-size: 16px;
+  }
+  p { line-height: 1.15; margin: 0 0 16px; }
+  main a { color: var(--text); }
+  h2 { margin: 24px 0 18px; }
+  section { margin-top: 56px; text-align: left; }
+  section h2 { text-align: center; }
+  .note { text-align: center; font-size: 13px; opacity: 0.7; }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 6px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  }
+  .card b { display: block; color: var(--accent); font-size: 26px; margin-bottom: 6px; }
+  .card small { opacity: 0.8; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { padding: 8px 6px; border-bottom: 1px solid #3a3a44; }
+  th { text-align: left; font-size: 13px; letter-spacing: 1px; opacity: 0.8; }
+  td img { width: 28px; height: 28px; border-radius: 4px; vertical-align: middle; margin-right: 8px; }
+  .win { color: #4ea3ff; font-weight: 700; }
+  .loss { color: var(--accent); font-weight: 700; }
+  .table-wrap { overflow-x: auto; margin-bottom: 24px; }
+  footer {
+    background: var(--bar);
+    padding: 36px 16px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.25;
+  }
+  footer p { max-width: 1000px; margin: 0 auto; }
+  @media (max-width: 640px) {
+    .unit { width: calc(50% - 4px); }
+    .unit span { font-size: 40px; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="#">FAILURE</a>
+  <a href="#rank">RANK</a>
+  <a href="#champions">CHAMPIONS</a>
+  <a href="#history">HISTORY</a>
+</nav>
+
+<main>
+  <h1>Is Gen A Failure Yet?</h1>
+
+  <div class="timer">
+    <div class="unit"><span id="days">00</span><small>DAYS</small></div>
+    <div class="unit"><span id="hours">00</span><small>HOURS</small></div>
+    <div class="unit"><span id="minutes">00</span><small>MINUTES</small></div>
+    <div class="unit"><span id="seconds">00</span><small>SECONDS</small></div>
+  </div>
+
+  <p id="verdict">Not yet.</p>
+  <p id="status">This countdown reaches 0 on January 1st, 2027 at midnight. If Gen is not in Plat by then, he is a failure.</p>
+
+  <h2>Who is Gen?</h2>
+  <p>A challenger player stuck in silver because of his teammates.</p>
+
+  <section id="rank">
+    <h2>The Evidence</h2>
+    <p class="note" id="snapshot"></p>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section id="champions">
+    <h2 id="champ-title">Most Played</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>CHAMPION</th><th>GAMES</th><th>WIN RATE</th><th>KDA</th><th id="cs-head">CS/MIN</th></tr></thead>
+        <tbody id="champ-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="history">
+    <h2>Recent Games</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>CHAMPION</th><th>RESULT</th><th>K / D / A</th><th>QUEUE</th><th id="len-head">LENGTH</th><th>WHEN</th></tr></thead>
+        <tbody id="game-rows"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>Disclaimer: This is a non-commercial joke website made among friends. It is not affiliated with Riot Games or anyone's teammates, who are, according to Gen, the real problem.</p>
+</footer>
+
+<script src="data.js"></script>
+<script>
+  const target = new Date(2027, 0, 1, 0, 0, 0).getTime();
+  const pad = n => String(n).padStart(2, "0");
+
+  function tick() {
+    const diff = Math.max(0, target - Date.now());
+    const s = Math.floor(diff / 1000);
+    document.getElementById("days").textContent = pad(Math.floor(s / 86400));
+    document.getElementById("hours").textContent = pad(Math.floor(s / 3600) % 24);
+    document.getElementById("minutes").textContent = pad(Math.floor(s / 60) % 60);
+    document.getElementById("seconds").textContent = pad(s % 60);
+
+    if (diff === 0) {
+      document.getElementById("verdict").textContent = "Yes.";
+      document.getElementById("status").textContent =
+        "This countdown reached 0 on January 1st, 2027 and Gen was still in Silver, so he is a failure.";
+      clearInterval(timer);
+    }
+  }
+
+  const timer = setInterval(tick, 1000);
+  tick();
+
+  // window.PLAYER_DATA comes from data.js, which open.bat refreshes from the Riot API
+  const p = window.PLAYER_DATA;
+  const LAST_SEASON = "Bronze 4";
+
+  const icon = id =>
+    `<img src="https://ddragon.leagueoflegends.com/cdn/${p.ddragon}/img/champion/${id}.png" alt="" onerror="this.remove()">`;
+  const length = s => `${Math.floor(s / 60)}m ${pad(s % 60)}s`;
+  const ago = ms => {
+    const min = Math.round((Date.now() - ms) / 60000);
+    if (min < 60) return `${min} minutes ago`;
+    const h = Math.round(min / 60);
+    if (h < 24) return `${h} hours ago`;
+    const d = Math.round(h / 24);
+    return d === 1 ? "1 day ago" : `${d} days ago`;
+  };
+
+  if (!p) {
+    document.getElementById("snapshot").textContent = "No data.js found. Run open.bat to fetch Gen's stats.";
+  } else {
+    document.getElementById("snapshot").textContent =
+      `I AM FROM TEL#AVIV · EUW · ${p.source} · updated ${new Date(p.updated).toLocaleString()}`;
+
+    const solo = p.solo;
+    const soloGames = solo ? solo.wins + solo.losses : 0;
+    document.getElementById("cards").innerHTML = [
+      solo ? [solo.tier, `Solo/Duo · ${solo.lp} LP`] : ["Unranked", "Solo/Duo"],
+      [`${soloGames}`, `ranked games played this season`],
+      solo ? [`${Math.round(solo.wins / soloGames * 100)}%`, `win rate (${solo.wins}W ${solo.losses}L)`] : ["–", "win rate"],
+      [LAST_SEASON, `last season (2025)`]
+    ].map(([big, small]) => `<div class="card"><b>${big}</b><small>${small}</small></div>`).join("");
+
+    // Champion totals over the fetched games, most played first
+    const byChamp = {};
+    for (const g of p.games) {
+      const c = byChamp[g.id] ??= { id: g.id, name: g.name, games: 0, wins: 0, k: 0, d: 0, a: 0, cs: 0, secs: 0 };
+      c.games++; c.wins += g.win; c.k += g.k; c.d += g.d; c.a += g.a; c.cs += g.cs; c.secs += g.duration;
+    }
+    const avg = (n, c) => (n / c.games).toFixed(1);
+    // op.gg data has no game lengths, so fall back to CS per game and drop the length column
+    const hasLength = p.games.every(g => g.duration);
+    const csCell = c => hasLength ? (c.cs / c.secs * 60).toFixed(1) : Math.round(c.cs / c.games);
+    if (!hasLength) {
+      document.getElementById("cs-head").textContent = "AVG CS";
+      document.getElementById("len-head").remove();
+    }
+    document.getElementById("champ-title").textContent = `Most Played (Last ${p.games.length} Games)`;
+    document.getElementById("champ-rows").innerHTML = Object.values(byChamp)
+      .sort((x, y) => y.games - x.games || y.wins - x.wins)
+      .map(c => `<tr><td>${icon(c.id)}${c.name}</td><td>${c.games}</td><td>${Math.round(c.wins / c.games * 100)}%</td>` +
+        `<td>${avg(c.k, c)} / ${avg(c.d, c)} / ${avg(c.a, c)}</td><td>${csCell(c)}</td></tr>`).join("");
+
+    document.getElementById("game-rows").innerHTML = p.games.map(g =>
+      `<tr><td>${icon(g.id)}${g.name}</td><td class="${g.win ? "win" : "loss"}">${g.win ? "Victory" : "Defeat"}</td>` +
+      `<td>${g.k} / ${g.d} / ${g.a}</td><td>${g.queue}</td>${hasLength ? `<td>${length(g.duration)}</td>` : ""}` +
+      `<td>${g.ended ? ago(g.ended) : g.when}</td></tr>`).join("");
+  }
+</script>
+</body>
+</html>
